@@ -45,20 +45,22 @@ import Layout from '../layouts/Layout.astro';
 					</div>
 				</div>
 
-				<form class="chat-form" id="chat-form">
-					<input type="text" id="chat-input" placeholder="Ask MindChat AI..." autocomplete="off" />
-					<button type="submit" class="send-btn interactive" id="send-btn">Send</button>
-				</form>
+				<div class="chat-options-panel" id="chat-options-panel">
+					<form class="chat-form" id="chat-form">
+						<input type="text" id="chat-input" placeholder="Ask MindChat AI..." autocomplete="off" />
+						<button type="submit" class="send-btn interactive" id="send-btn">Send</button>
+					</form>
 
-				<div class="chat-controls">
-					<button class="control-btn interactive" id="clear-btn">Clear Conversation</button>
-				</div>
+					<div class="chat-controls">
+						<button class="control-btn interactive" id="clear-btn">Clear Conversation</button>
+					</div>
 
-				<div class="suggested-prompts" id="suggested-prompts">
-					<button class="prompt-chip" data-prompt="What can you do?">What can you do?</button>
-					<button class="prompt-chip" data-prompt="Tell me a fun fact">Tell me a fun fact</button>
-					<button class="prompt-chip" data-prompt="Write a short poem">Write a short poem</button>
-					<button class="prompt-chip" data-prompt="Explain AI in simple terms">Explain AI simply</button>
+					<div class="suggested-prompts" id="suggested-prompts">
+						<button class="prompt-chip" data-prompt="What can you do?">What can you do?</button>
+						<button class="prompt-chip" data-prompt="Tell me a fun fact">Tell me a fun fact</button>
+						<button class="prompt-chip" data-prompt="Write a short poem">Write a short poem</button>
+						<button class="prompt-chip" data-prompt="Explain AI in simple terms">Explain AI simply</button>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -86,6 +88,14 @@ import Layout from '../layouts/Layout.astro';
 		const sendBtn = document.getElementById('send-btn') as HTMLButtonElement;
 		const chatMessages = document.getElementById('chat-messages');
 		const clearBtn = document.getElementById('clear-btn');
+		const chatOptionsPanel = document.getElementById('chat-options-panel');
+
+		if (chatOptionsPanel) {
+			chatOptionsPanel.classList.remove('visible');
+			setTimeout(() => {
+				chatOptionsPanel.classList.add('visible');
+			}, 3000);
+		}
 
 		let chatHistory: Array<{role: string, parts: Array<{text: string}>}> = [];
 		let isWaiting = false;
@@ -429,6 +439,15 @@ import Layout from '../layouts/Layout.astro';
 	:global(.model-message .copy-btn) { color: rgba(255,255,255,0.5); }
 	:global(.copy-btn:hover) { color: var(--text-primary); }
 	:global(.model-message .copy-btn:hover) { color: #ffffff; }
+
+	.chat-options-panel {
+		display: flex; flex-direction: column; width: 100%;
+		opacity: 0; pointer-events: none;
+		transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.chat-options-panel.visible {
+		opacity: 1; pointer-events: auto;
+	}
 
 	.chat-form {
 		display: flex; gap: 0.75rem; width: 100%; background-color: var(--card-bg);
