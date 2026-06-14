@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="MindChat AI — Where Curiosity Meets Intelligence" description="MindChat AI is your free, private AI chat assistant. No sign-up needed. Ask anything, anytime.">
+<Layout title="500 — Server Error | MindChat AI" description="Something went wrong on our end. Please try again later.">
 	<main class="page-container">
 
 		<header class="header">
@@ -21,27 +21,21 @@ import Layout from '../layouts/Layout.astro';
 					<circle cx="53.5" cy="46" r="2.5" fill="currentColor" />
 					<circle cx="74.5" cy="46" r="2.5" fill="currentColor" />
 				</svg>
-				<span>mindchat ai</span>
+				<span>MindChat AI</span>
 			</div>
 			<div class="header-right">
 				<button class="theme-toggle interactive" id="theme-toggle" aria-label="Toggle theme">Dark Mode</button>
+				<span class="divider">·</span>
+				<a href="/" class="header-link interactive">← Home</a>
 			</div>
 		</header>
 
-		<div class="spline-wrapper">
-			<spline-viewer url="https://prod.spline.design/sT38-ZSmhHN8uuqF/scene.splinecode" loading="eager" events-target="global"></spline-viewer>
-			<div class="spline-loading"></div>
-		</div>
-
-		<section class="hero-section">
-			<div class="hero-container">
-				<h1 class="hero-text">
-					<span class="invert-text">welcome to </span><span class="highlight-red">mindchat</span><span class="invert-text"> ai</span>
-				</h1>
-				<p class="hero-tagline invert-text">Where curiosity meets intelligence</p>
-				<a href="/chat" class="get-started-btn" id="get-started-btn">
-					get started
-				</a>
+		<section class="error-section">
+			<div class="error-container">
+				<h1 class="error-code invert-text">500</h1>
+				<p class="error-message invert-text">Server error</p>
+				<p class="error-description">Something went wrong on our end. Please try again later.</p>
+				<a href="/" class="error-link interactive">← back to home</a>
 			</div>
 		</section>
 
@@ -55,20 +49,6 @@ import Layout from '../layouts/Layout.astro';
 	</main>
 </Layout>
 
-<script>
-	function showGetStarted() {
-		const btn = document.getElementById('get-started-btn');
-		if (!btn) return;
-		btn.classList.remove('visible', 'blend-active');
-		setTimeout(() => {
-			btn.classList.add('visible');
-			setTimeout(() => btn.classList.add('blend-active'), 1000);
-		}, 4000);
-	}
-
-	document.addEventListener('astro:page-load', showGetStarted);
-</script>
-
 <style>
 	.page-container {
 		display: flex; flex-direction: column; justify-content: space-between;
@@ -79,7 +59,6 @@ import Layout from '../layouts/Layout.astro';
 	.header {
 		display: flex; justify-content: space-between; align-items: center;
 		width: 100%; padding: 2.5rem 3.5rem; z-index: 10;
-		opacity: 0; animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
 	}
 
 	.header-left {
@@ -98,6 +77,9 @@ import Layout from '../layouts/Layout.astro';
 		letter-spacing: 0.2em; color: var(--hero-color);
 	}
 
+	.header-link { text-decoration: none; color: inherit; }
+	.divider { color: var(--text-muted); }
+
 	.theme-toggle {
 		background: none; border: none; outline: none; cursor: pointer;
 		font-family: 'Montserrat', sans-serif;
@@ -107,85 +89,55 @@ import Layout from '../layouts/Layout.astro';
 	}
 	.theme-toggle:hover { letter-spacing: 0.3em; }
 
-	.hero-section {
+	.error-section {
 		flex: 1; display: flex; justify-content: center; align-items: center;
-		width: 100%; padding: 0 1.5rem; position: relative;
+		padding: 0 1.5rem;
 	}
 
-	.spline-wrapper {
-		position: absolute; bottom: -15dvh; left: 0; width: 100%; height: 115dvh;
-		pointer-events: auto;
+	.error-container {
+		display: flex; flex-direction: column; align-items: center; gap: 1rem;
+		text-align: center;
 	}
 
-	.spline-loading {
-		position: absolute; inset: 0;
-		background: linear-gradient(135deg, var(--skeleton-bg) 0%, transparent 50%, var(--skeleton-bg) 100%);
-		background-size: 200% 200%;
-		animation: shimmer 2s ease-in-out infinite;
-		pointer-events: none;
-		z-index: -1;
-	}
-
-	@keyframes shimmer {
-		0% { background-position: 0% 50%; }
-		50% { background-position: 100% 50%; }
-		100% { background-position: 0% 50%; }
-	}
-
-	spline-viewer { width: 100%; height: 100%; }
-
-	.hero-container {
-		position: relative; top: 7vh; width: 100%; max-width: 1700px;
-		display: flex; flex-direction: column; justify-content: center;
-		align-items: center; gap: 2rem; pointer-events: none;
-	}
-
-	.hero-text {
+	.error-code {
 		font-family: 'Montserrat', sans-serif;
-		font-size: 9.2vw; font-weight: 900; text-transform: uppercase;
-		letter-spacing: -0.05em; line-height: 0.8; text-align: center;
-		width: 100%; margin: 0; padding: 0; white-space: nowrap;
-		overflow: visible; pointer-events: none;
-		text-wrap: balance;
-		transition: letter-spacing 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+		font-size: clamp(6rem, 20vw, 12rem); font-weight: 900;
+		text-transform: uppercase; letter-spacing: -0.05em; line-height: 0.8;
+		color: #ffffff; mix-blend-mode: difference;
 	}
 
-	.invert-text { color: #ffffff; mix-blend-mode: difference; }
-	.highlight-red { color: var(--signature-color); }
-
-	.hero-section:hover .hero-text { letter-spacing: -0.04em; }
-
-	.hero-tagline {
+	.error-message {
 		font-family: 'Montserrat', sans-serif;
-		font-size: 1.1rem; font-weight: 500;
-		letter-spacing: 0.15em; text-transform: uppercase;
-		color: var(--text-secondary); text-align: center;
-		opacity: 0; animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-		pointer-events: none;
+		font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 700;
+		text-transform: uppercase; letter-spacing: 0.1em;
+		color: #ffffff; mix-blend-mode: difference;
 	}
 
-	.get-started-btn {
+	.error-description {
+		font-family: 'Montserrat', sans-serif;
+		font-size: 0.85rem; font-weight: 400;
+		color: var(--text-secondary); max-width: 400px;
+		line-height: 1.6;
+	}
+
+	.error-link {
 		background: none; border: none; outline: none; text-decoration: none;
 		font-family: 'Montserrat', sans-serif;
-		font-size: 1.2rem; font-weight: 900; text-transform: uppercase;
-		letter-spacing: -0.02em; line-height: 1;
-		color: #ffffff; opacity: 0; pointer-events: none;
-		transition: opacity 1s ease, letter-spacing 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+		font-size: 1rem; font-weight: 700; text-transform: uppercase;
+		letter-spacing: 0.05em; color: var(--signature-color);
+		margin-top: 0.5rem;
+		transition: letter-spacing 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 	}
-
-	.get-started-btn.visible { opacity: 1; pointer-events: auto; }
-	.get-started-btn.blend-active { mix-blend-mode: difference; opacity: unset; }
-	.get-started-btn.visible:hover { letter-spacing: 0.05em; }
+	.error-link:hover { letter-spacing: 0.15em; }
 
 	.footer {
 		display: flex; justify-content: space-between; align-items: center;
 		width: 100%; padding: 2.5rem 3.5rem; z-index: 10;
-		opacity: 0; animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1s forwards;
 	}
 
 	.footer-item {
 		font-size: 0.65rem; font-weight: 500; text-transform: uppercase;
-		letter-spacing: 0.15em; color: var(--text-color); font-variant: all-small-caps; white-space: nowrap;
+		letter-spacing: 0.15em; font-variant: all-small-caps; white-space: nowrap;
 	}
 
 	.footer-link { text-decoration: none; color: var(--text-color); position: relative; padding-bottom: 2px; }
@@ -196,24 +148,10 @@ import Layout from '../layouts/Layout.astro';
 	}
 	.footer-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
 
-	@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-	@media (max-width: 1200px) {
-		.header { padding: 1.5rem 2rem; }
-		.footer { padding: 1.5rem 2rem; }
-		.hero-text { font-size: 10vw; }
-		.get-started-btn { font-size: 1.1rem; }
-		.hero-tagline { font-size: 1rem; }
-	}
-
 	@media (max-width: 900px) {
 		.header { padding: 1.25rem 1.5rem; }
 		.footer { padding: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; justify-items: start; }
 		.footer-item:nth-child(even) { justify-self: end; text-align: right; }
-		.hero-text { font-size: 11vw; }
-		.get-started-btn { font-size: 1.05rem; }
-		.hero-tagline { font-size: 0.9rem; letter-spacing: 0.1em; }
-		.hero-container { gap: 1.5rem; }
 	}
 
 	@media (max-width: 600px) {
@@ -224,24 +162,5 @@ import Layout from '../layouts/Layout.astro';
 		.footer { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; align-items: center; text-align: center; }
 		.footer-item { font-size: 0.6rem; letter-spacing: 0.1em; }
 		.footer-item:nth-child(even) { justify-self: center; text-align: center; }
-		.hero-text { font-size: 12vw; white-space: normal; line-height: 0.9; }
-		.get-started-btn { font-size: 0.9rem; }
-		.hero-tagline { font-size: 0.75rem; letter-spacing: 0.08em; }
-		.hero-container { gap: 1.25rem; top: 5vh; }
-	}
-
-	@media (max-width: 400px) {
-		.header { padding: 0.75rem 1rem; }
-		.header-left { font-size: 0.55rem; letter-spacing: 0.1em; }
-		.header-right { font-size: 0.55rem; letter-spacing: 0.08em; }
-		.theme-toggle { font-size: 0.55rem; letter-spacing: 0.08em; }
-		.hero-text { font-size: 14vw; }
-		.get-started-btn { font-size: 0.8rem; }
-		.hero-tagline { font-size: 0.65rem; }
-	}
-
-	@media (pointer: coarse) {
-		.get-started-btn.visible { padding: 0.5rem 0; }
-		.theme-toggle { padding: 0.4rem 0; }
 	}
 </style>

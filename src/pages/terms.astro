@@ -1,0 +1,197 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Terms & Conditions — MindChat AI" description="Terms and conditions for using MindChat AI. Understand the terms of using our free AI chat service.">
+	<main class="page-container">
+
+		<header class="header">
+			<div class="header-left">
+				<svg class="header-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="20" height="20" aria-hidden="true">
+					<defs>
+						<linearGradient id="header-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+							<stop offset="0%" stop-color="#ff3b30"/>
+							<stop offset="100%" stop-color="#d42020"/>
+						</linearGradient>
+					</defs>
+					<path d="M 48,24 H 80 C 93,24 104,35 104,48 V 72 C 104,85 93,96 80,96 H 58 L 40,110 V 96 H 48 C 35,96 24,85 24,72 V 48 C 24,35 35,24 48,24 Z" fill="url(#header-logo-grad)" opacity="0.08"/>
+					<path d="M 48,24 H 80 C 93,24 104,35 104,48 V 72 C 104,85 93,96 80,96 H 58 L 40,110 V 96 H 48 C 35,96 24,85 24,72 V 48 C 24,35 35,24 48,24 Z" fill="none" stroke="url(#header-logo-grad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="M 46,70 V 54 C 46,43 55,43 59,50 L 64,57 L 69,50 C 73,43 82,43 82,54 V 70" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+					<circle cx="64" cy="57" r="3.5" fill="currentColor" />
+					<circle cx="53.5" cy="46" r="2.5" fill="currentColor" />
+					<circle cx="74.5" cy="46" r="2.5" fill="currentColor" />
+				</svg>
+				<span>MindChat AI</span>
+			</div>
+			<div class="header-right">
+				<button class="theme-toggle interactive" id="theme-toggle" aria-label="Toggle theme">Dark Mode</button>
+				<span class="divider">·</span>
+				<a href="/" class="header-link interactive">← Home</a>
+			</div>
+		</header>
+
+		<section class="content-section">
+			<div class="content-container">
+				<h1 class="content-heading invert-text">Terms & Conditions</h1>
+				<p class="content-date">Last updated: June 15, 2026</p>
+
+				<div class="content-body">
+					<h2>Acceptance of Terms</h2>
+					<p>By using MindChat AI, you agree to these terms and conditions. If you do not agree, please do not use our service.</p>
+
+					<h2>Use of Service</h2>
+					<p>MindChat AI provides an AI chat assistant for informational and entertainment purposes. You agree to use this service responsibly and not to submit harmful, illegal, or abusive content.</p>
+
+					<h2>No Account Required</h2>
+					<p>MindChat AI does not require account creation. You can use the service anonymously without providing personal information.</p>
+
+					<h2>Intellectual Property</h2>
+					<p>The MindChat AI name, branding, and website design are our intellectual property. The AI responses generated are provided as-is and should not be considered professional advice.</p>
+
+					<h2>Limitation of Liability</h2>
+					<p>MindChat AI is provided "as is" without warranties of any kind. We are not liable for any damages arising from the use of our service. AI responses may contain errors — always verify critical information from official sources.</p>
+
+					<h2>Changes to Terms</h2>
+					<p>We reserve the right to update these terms at any time. Changes will be posted on this page with an updated date.</p>
+
+					<h2>Contact</h2>
+					<p>If you have questions about these terms, please <a href="/contact" class="content-link">contact us</a>.</p>
+				</div>
+			</div>
+		</section>
+
+		<footer class="footer">
+			<div class="footer-item"><a href="/privacy" class="footer-link">Privacy Policy</a></div>
+			<div class="footer-item"><a href="/about" class="footer-link">About Us</a></div>
+			<div class="footer-item"><a href="/terms" class="footer-link">Terms & Conditions</a></div>
+			<div class="footer-item"><a href="/contact" class="footer-link">Contact Us</a></div>
+		</footer>
+
+	</main>
+</Layout>
+
+<style>
+	.page-container {
+		display: flex; flex-direction: column;
+		width: 100%; min-height: 100dvh; position: relative;
+		background-color: var(--bg-color); overflow-y: auto;
+	}
+
+	:global(html), :global(body) {
+		overflow: auto;
+	}
+
+	.header {
+		display: flex; justify-content: space-between; align-items: center;
+		width: 100%; padding: 2.5rem 3.5rem; z-index: 10;
+	}
+
+	.header-left {
+		display: flex; align-items: center; gap: 0.6rem;
+		font-size: 0.75rem; font-weight: 900; text-transform: uppercase;
+		letter-spacing: 0.25em; color: var(--hero-color); font-variant: all-small-caps;
+	}
+
+	.header-logo {
+		width: 20px; height: 20px; flex-shrink: 0;
+	}
+
+	.header-right {
+		display: flex; align-items: center; gap: 0.75rem;
+		font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+		letter-spacing: 0.2em; color: var(--hero-color);
+	}
+
+	.header-link { text-decoration: none; color: inherit; }
+	.divider { color: var(--text-muted); }
+
+	.theme-toggle {
+		background: none; border: none; outline: none; cursor: pointer;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+		letter-spacing: 0.2em; color: var(--hero-color); padding: 0;
+		transition: letter-spacing 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s;
+	}
+	.theme-toggle:hover { letter-spacing: 0.3em; }
+
+	.content-section {
+		flex: 1; display: flex; justify-content: center;
+		padding: 3rem 1.5rem 4rem;
+	}
+
+	.content-container {
+		width: 100%; max-width: 800px;
+		display: flex; flex-direction: column; gap: 1.5rem;
+	}
+
+	.content-heading {
+		font-family: 'Montserrat', sans-serif;
+		font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+		text-transform: uppercase; letter-spacing: -0.03em;
+		text-align: center; color: #ffffff; mix-blend-mode: difference;
+	}
+
+	.content-date {
+		font-size: 0.75rem; color: var(--text-muted);
+		text-align: center; text-transform: uppercase; letter-spacing: 0.1em;
+	}
+
+	.content-body {
+		display: flex; flex-direction: column; gap: 1.25rem;
+	}
+
+	.content-body h2 {
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1.25rem; font-weight: 700; text-transform: uppercase;
+		letter-spacing: 0.05em; color: var(--text-primary);
+		margin-top: 1rem;
+	}
+
+	.content-body h2:first-child { margin-top: 0; }
+
+	.content-body p {
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1rem; font-weight: 400; line-height: 1.7;
+		color: var(--text-secondary);
+	}
+
+	.content-link {
+		color: var(--signature-color); text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.footer {
+		display: flex; justify-content: space-between; align-items: center;
+		width: 100%; padding: 2.5rem 3.5rem; z-index: 10;
+	}
+
+	.footer-item {
+		font-size: 0.65rem; font-weight: 500; text-transform: uppercase;
+		letter-spacing: 0.15em; font-variant: all-small-caps; white-space: nowrap;
+	}
+
+	.footer-link { text-decoration: none; color: var(--text-color); position: relative; padding-bottom: 2px; }
+	.footer-link::after {
+		content: ''; position: absolute; width: 100%; transform: scaleX(0);
+		height: 1px; bottom: 0; left: 0; background-color: var(--text-color);
+		transform-origin: bottom right; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.footer-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+
+	@media (max-width: 900px) {
+		.header { padding: 1.25rem 1.5rem; }
+		.footer { padding: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; justify-items: start; }
+		.footer-item:nth-child(even) { justify-self: end; text-align: right; }
+	}
+
+	@media (max-width: 600px) {
+		.header { padding: 1rem 1.25rem; }
+		.header-left { font-size: 0.65rem; letter-spacing: 0.15em; }
+		.header-right { font-size: 0.65rem; letter-spacing: 0.1em; gap: 0.5rem; }
+		.theme-toggle { font-size: 0.65rem; letter-spacing: 0.1em; }
+		.footer { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; align-items: center; text-align: center; }
+		.footer-item { font-size: 0.6rem; letter-spacing: 0.1em; }
+		.footer-item:nth-child(even) { justify-self: center; text-align: center; }
+		.content-section { padding: 2rem 1.25rem 3rem; }
+	}
+</style>

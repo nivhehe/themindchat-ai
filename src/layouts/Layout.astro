@@ -1,23 +1,176 @@
+---
+import { ClientRouter } from 'astro:transitions';
+
+export interface Props {
+	title?: string;
+	description?: string;
+	ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+const site = 'https://themindchat.online';
+const defaultTitle = 'MindChat AI — Your Intelligent Chat Assistant';
+const defaultDesc = 'MindChat AI - Your intelligent, free, and private AI chat assistant. No sign-up required.';
+const pageTitle = title || defaultTitle;
+const pageDesc = description || defaultDesc;
+const image = ogImage || `${site}/favicon.svg`;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
+
+		<title>{pageTitle}</title>
+		<meta name="description" content={pageDesc} />
+		<meta name="keywords" content="AI chat, MindChat, free AI assistant, Gemini chat, no sign-up AI, online chat" />
+		<meta name="robots" content="index, follow" />
+		<meta name="language" content="English" />
+		<meta name="author" content="MindChat AI" />
+
+		<link rel="canonical" href={site} />
+
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/favicon.svg" />
+		<link rel="manifest" href="/manifest.json" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="theme-color" content="#e9e9e9" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={site} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={pageDesc} />
+		<meta property="og:image" content={image} />
+		<meta property="og:image:width" content="128" />
+		<meta property="og:image:height" content="128" />
+
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:url" content={site} />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={pageDesc} />
+		<meta name="twitter:image" content={image} />
+
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "MindChat AI",
+			"url": site,
+			"description": pageDesc,
+			"applicationCategory": "AI Assistant",
+			"operatingSystem": "All",
+			"browserRequirements": "Modern browser required"
+		}, null, 2)}>
+		</script>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+		<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.54/build/spline-viewer.js"></script>
+		<ClientRouter />
+		<script>
+			const t = localStorage.getItem('mindchat-theme') || 'light';
+			document.documentElement.setAttribute('data-theme', t);
+		</script>
 	</head>
 	<body>
 		<slot />
 	</body>
 </html>
 
-<style>
-	html,
-	body {
+<script>
+	const KEY = 'mindchat-theme';
+	const html = document.documentElement;
+	function updateToggle() {
+		const cur = html.getAttribute('data-theme') || 'light';
+		document.querySelectorAll('#theme-toggle').forEach(btn => {
+			btn.textContent = cur === 'dark' ? 'Light Mode' : 'Dark Mode';
+		});
+	}
+	function toggleTheme() {
+		const cur = html.getAttribute('data-theme');
+		const next = cur === 'dark' ? 'light' : 'dark';
+		html.setAttribute('data-theme', next);
+		localStorage.setItem(KEY, next);
+		updateToggle();
+	}
+	function syncTheme() {
+		const t = localStorage.getItem(KEY) || 'light';
+		html.setAttribute('data-theme', t);
+		updateToggle();
+	}
+	document.addEventListener('astro:page-load', syncTheme);
+	document.addEventListener('click', (e) => {
+		const target = e.target;
+		if (target.closest('#theme-toggle')) {
+			e.preventDefault();
+			toggleTheme();
+		}
+	});
+	(window as any).toggleTheme = toggleTheme;
+</script>
+
+<style is:global>
+	:root {
+		--bg-color: #e9e9e9;
+		--hero-color: #111111;
+		--signature-color: #d42020;
+		--text-color: #333333;
+		--card-bg: #ffffff;
+		--text-primary: #111111;
+		--text-secondary: #333333;
+		--text-muted: #999999;
+		--model-bg: #1a1a1a;
+		--model-text: #ffffff;
+		--error-bg: #ffebeb;
+		--error-color: #d42020;
+		--code-bg: rgba(0,0,0,0.06);
+		--code-block-bg: #272727;
+		--code-block-text: #fafafa;
+		--skeleton-bg: rgba(0,0,0,0.05);
+		--border-color: rgba(0,0,0,0.1);
+	}
+
+	[data-theme="dark"] {
+		--bg-color: #1a1a1a;
+		--hero-color: #e9e9e9;
+		--text-color: #cccccc;
+		--card-bg: #2a2a2a;
+		--text-primary: #e9e9e9;
+		--text-secondary: #cccccc;
+		--text-muted: #777777;
+		--model-bg: #3a3a3a;
+		--model-text: #e9e9e9;
+		--error-bg: #3d1a1a;
+		--error-color: #ff6b6b;
+		--code-bg: rgba(255,255,255,0.08);
+		--code-block-bg: #1a1a1a;
+		--code-block-text: #e9e9e9;
+		--skeleton-bg: rgba(255,255,255,0.05);
+		--border-color: rgba(255,255,255,0.1);
+	}
+
+	* {
+		box-sizing: border-box;
 		margin: 0;
+		padding: 0;
+	}
+
+	html, body {
 		width: 100%;
 		height: 100%;
+		background-color: var(--bg-color);
+		color: var(--text-color);
+		font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		overflow: hidden;
+		user-select: none;
+	}
+
+	body {
+		display: flex;
+		flex-direction: column;
+		height: 100dvh;
 	}
 </style>
