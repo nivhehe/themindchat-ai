@@ -203,6 +203,37 @@ const image = ogImage || `${site}/favicon.svg`;
 	}
 
 	document.addEventListener('astro:page-load', initMobileHint);
+
+	// Hide Spline watermark logo inside shadow DOM of spline-viewer
+	function hideSplineLogo() {
+		const viewers = document.querySelectorAll('spline-viewer');
+		viewers.forEach(viewer => {
+			const checkAndHide = () => {
+				if (viewer.shadowRoot) {
+					const logo = viewer.shadowRoot.getElementById('logo');
+					if (logo) {
+						logo.style.display = 'none';
+						return true;
+					}
+				}
+				return false;
+			};
+			
+			// Run check immediately
+			if (checkAndHide()) return;
+
+			// Poll to hide logo as soon as shadow DOM mounts
+			const interval = setInterval(() => {
+				if (checkAndHide()) clearInterval(interval);
+			}, 100);
+
+			// Safeguard timeout to clear polling interval
+			setTimeout(() => clearInterval(interval), 10000);
+		});
+	}
+
+	hideSplineLogo();
+	document.addEventListener('astro:page-load', hideSplineLogo);
 </script>
 
 <style is:global>
