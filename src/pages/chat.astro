@@ -86,6 +86,9 @@ import Layout from '../layouts/Layout.astro';
 
 	async function initChat() {
 		const chatForm = document.getElementById('chat-form') as HTMLFormElement;
+		if (!chatForm || (chatForm as any).__chatInitialized) return;
+		(chatForm as any).__chatInitialized = true;
+
 		const chatInput = document.getElementById('chat-input') as HTMLInputElement;
 		const sendBtn = document.getElementById('send-btn') as HTMLButtonElement;
 		const chatMessages = document.getElementById('chat-messages');
@@ -233,7 +236,9 @@ import Layout from '../layouts/Layout.astro';
 		}
 
 		document.querySelectorAll('.prompt-chip').forEach(btn => {
-			btn.addEventListener('click', () => {
+			btn.addEventListener('click', (e) => {
+				e.preventDefault();
+				e.stopPropagation();
 				if (!chatInput || !chatForm || isWaiting) return;
 				const text = btn.getAttribute('data-prompt') || '';
 				chatInput.value = text;
