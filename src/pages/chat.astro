@@ -321,16 +321,21 @@ import Layout from '../layouts/Layout.astro';
 			});
 		}
 
+	}
+
+	// Global shortcut listener to focus chat input (registered once)
+	if (!(window as any).__keydownShortcutInitialized) {
+		(window as any).__keydownShortcutInitialized = true;
 		document.addEventListener('keydown', (e) => {
 			if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-				e.preventDefault();
-				chatInput?.focus();
+				const chatInput = document.getElementById('chat-input') as HTMLInputElement;
+				if (chatInput) {
+					e.preventDefault();
+					chatInput.focus();
+				}
 			}
 		});
 	}
-
-	// Run immediately on initial load
-	initChat();
 
 	document.addEventListener('astro:page-load', initChat);
 </script>
