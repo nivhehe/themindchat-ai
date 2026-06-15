@@ -258,6 +258,26 @@ import Layout from '../layouts/Layout.astro';
 				chatMessages?.appendChild(loadingDiv);
 				scrollToBottom();
 
+				// Check for matching custom replies (special Hetvi trigger)
+				const normalizedMessage = message.toLowerCase().replace(/[?.,!"]/g, "").trim();
+				if (normalizedMessage === "hi i am hetvi") {
+					setTimeout(() => {
+						loadingDiv.remove();
+						
+						// Turn interface to baby pink color smoothly
+						document.documentElement.setAttribute('data-theme', 'pink');
+						localStorage.setItem('mindchat-theme', 'pink');
+
+						const text = "hello to the cutest , prettiest , gorgeous person the world\nhow can i help you sweetheart";
+						appendAIMessage(text);
+						chatHistory.push({ role: 'user', parts: [{ text: message }] });
+						chatHistory.push({ role: 'model', parts: [{ text }] });
+						isWaiting = false;
+						sendBtn.disabled = false;
+					}, 800); // Simulate network thinking latency
+					return;
+				}
+
 				try {
 					const response = await fetch(API_URL, {
 						method: 'POST',
@@ -314,6 +334,7 @@ import Layout from '../layouts/Layout.astro';
 		display: flex; flex-direction: column; justify-content: space-between;
 		height: 100dvh; width: 100%; position: relative;
 		background-color: var(--bg-color); overflow: hidden;
+		transition: background-color 0.8s ease;
 	}
 
 	.spline-wrapper {
@@ -395,7 +416,7 @@ import Layout from '../layouts/Layout.astro';
 	.chat-messages::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.1); border-radius: 3px; }
 
 	:global(.message) { display: flex; width: 100%; animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-	:global(.message-content) { max-width: 75%; padding: 0.9rem 1.2rem; font-size: 0.9rem; line-height: 1.5; word-break: break-word; }
+	:global(.message-content) { max-width: 75%; padding: 0.9rem 1.2rem; font-size: 0.9rem; line-height: 1.5; word-break: break-word; transition: background-color 0.8s ease, color 0.8s ease; }
 
 	:global(.user-message) { justify-content: flex-start; }
 	:global(.user-message .message-content) { background-color: var(--card-bg); color: var(--text-primary); border-radius: 12px 12px 12px 2px; }
@@ -453,6 +474,7 @@ import Layout from '../layouts/Layout.astro';
 		display: flex; gap: 0.75rem; width: 100%; background-color: var(--card-bg);
 		padding: 0.75rem 1.25rem; border-radius: 8px; align-items: center;
 		border: 1px solid var(--border-color);
+		transition: background-color 0.8s ease, border-color 0.8s ease;
 	}
 
 	.chat-form:focus-within { border-color: var(--signature-color); }

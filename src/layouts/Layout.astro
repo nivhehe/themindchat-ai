@@ -152,6 +152,26 @@ const image = ogImage || `${site}/favicon.svg`;
 		--border-color: rgba(255,255,255,0.1);
 	}
 
+	[data-theme="pink"] {
+		--bg-color: #ffeef2;
+		--hero-color: #d81b60;
+		--signature-color: #ff4081;
+		--text-color: #4f0e21;
+		--card-bg: #ffffff;
+		--text-primary: #4f0e21;
+		--text-secondary: #883f52;
+		--text-muted: #b97b8c;
+		--model-bg: #ffd1dc;
+		--model-text: #4f0e21;
+		--error-bg: #ffebeb;
+		--error-color: #d81b60;
+		--code-bg: rgba(216,27,96,0.06);
+		--code-block-bg: #ffe0e6;
+		--code-block-text: #4f0e21;
+		--skeleton-bg: rgba(216,27,96,0.05);
+		--border-color: rgba(216,27,96,0.15);
+	}
+
 	* {
 		box-sizing: border-box;
 		margin: 0;
@@ -166,6 +186,7 @@ const image = ogImage || `${site}/favicon.svg`;
 		font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 		overflow: hidden;
 		user-select: none;
+		transition: background-color 0.8s ease, color 0.8s ease;
 	}
 
 	body {
