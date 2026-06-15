@@ -1,46 +1,133 @@
-# Astro Starter Kit: Basics
+# MindChat AI
 
-```sh
-npm create astro@latest -- --template basics
+**MindChat AI** is a free, private, no-sign-up AI chat assistant powered by Google Gemini 2.5 Flash. Built with Astro and a Cloudflare Worker proxy.
+
+**Live at:** [https://themindchat.online](https://themindchat.online)
+
+---
+
+## Tech Stack
+
+- **Frontend:** [Astro](https://astro.build/) 6 (static site generation)
+- **AI Model:** Google Gemini 2.5 Flash
+- **API Proxy:** Cloudflare Worker (`mindchat-proxy`) with multi-key failover
+- **3D Graphics:** Spline Viewer (interactive 3D scene on landing page)
+- **Analytics:** Google Analytics 4
+- **Hosting:** Cloudflare Pages (`themindchat.online`)
+
+---
+
+## Project Structure
+
 ```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
 /
 ├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+│   ├── favicon.ico
+│   ├── favicon.svg
+│   ├── manifest.json
+│   ├── robots.txt
+│   └── sitemap.xml
+├── src/
+│   ├── assets/
+│   │   └── background.svg
+│   ├── components/
+│   │   └── Welcome.astro
+│   ├── layouts/
+│   │   └── Layout.astro
+│   └── pages/
+│       ├── index.astro       # Landing page (Spline 3D scene)
+│       ├── chat.astro        # Chat interface
+│       ├── about.astro
+│       ├── contact.astro
+│       ├── privacy.astro
+│       ├── terms.astro
+│       ├── 404.astro
+│       └── 500.astro
+├── workers/
+│   └── chat-proxy/
+│       ├── wrangler.toml
+│       └── src/
+│           └── index.ts      # Gemini API proxy with key rotation
+├── astro.config.mjs
+├── package.json
+└── tsconfig.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+---
 
-## 🧞 Commands
+## Features
 
-All commands are run from the root of the project, from a terminal:
+- No sign-up or account required
+- Privacy-first — no conversation data stored
+- Dark / light / pink theme toggle
+- Interactive 3D robot on landing page (Spline)
+- Suggested prompts for quick-start conversations
+- Code block formatting in responses
+- Copy-to-clipboard on messages
+- Keyboard shortcut `Cmd/Ctrl+K` to focus chat input
+- Mobile-responsive with touch interaction hints
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+---
 
-## 👀 Want to learn more?
+## Getting Started
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Prerequisites
+
+- Node.js >= 22.12.0
+
+### Install
+
+```sh
+npm install
+```
+
+### Dev Server
+
+```sh
+npm run dev
+```
+
+Opens at `http://localhost:4321`.
+
+### Build
+
+```sh
+npm run build
+```
+
+Output goes to `dist/`.
+
+---
+
+## Cloudflare Worker (API Proxy)
+
+The chat backend is a Cloudflare Worker that proxies requests to the Gemini API.
+
+### Deploy
+
+```sh
+cd workers/chat-proxy
+npx wrangler deploy
+```
+
+Requires `GEMINI_API_KEY` secret (comma-separated keys for failover):
+
+```sh
+npx wrangler secret put GEMINI_API_KEY
+```
+
+---
+
+## Domain Redirect
+
+Any visit to `*.pages.dev` or other unauthorized hosts is redirected to `https://themindchat.online/` via:
+
+- Client-side JS redirect in `Layout.astro`
+- Dynamic `<link rel="canonical">` tags
+- Sitemap pointing only to `themindchat.online`
+
+---
+
+## License
+
+MIT
