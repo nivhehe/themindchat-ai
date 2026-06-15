@@ -14,13 +14,24 @@ const defaultDesc = 'MindChat AI - Your intelligent, free, and private AI chat a
 const pageTitle = title || defaultTitle;
 const pageDesc = description || defaultDesc;
 const image = ogImage || `${site}/favicon.svg`;
+const canonicalURL = new URL(Astro.url.pathname, site).href;
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<script is:inline>
+			(function() {
+				const allowedHosts = ['themindchat.online', 'www.themindchat.online', 'localhost', '127.0.0.1', '0.0.0.0'];
+				const hostname = window.location.hostname;
+				if (!allowedHosts.includes(hostname) && !hostname.endsWith('.local')) {
+					window.location.replace('https://themindchat.online' + window.location.pathname + window.location.search + window.location.hash);
+				}
+			})();
+		</script>
 
 		<title>{pageTitle}</title>
 		<meta name="description" content={pageDesc} />
@@ -29,7 +40,7 @@ const image = ogImage || `${site}/favicon.svg`;
 		<meta name="language" content="English" />
 		<meta name="author" content="MindChat AI" />
 
-		<link rel="canonical" href={site} />
+		<link rel="canonical" href={canonicalURL} />
 
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
@@ -40,7 +51,7 @@ const image = ogImage || `${site}/favicon.svg`;
 		<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
 
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content={site} />
+		<meta property="og:url" content={canonicalURL} />
 		<meta property="og:title" content={pageTitle} />
 		<meta property="og:description" content={pageDesc} />
 		<meta property="og:image" content={image} />
@@ -48,12 +59,20 @@ const image = ogImage || `${site}/favicon.svg`;
 		<meta property="og:image:height" content="128" />
 
 		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:url" content={site} />
+		<meta name="twitter:url" content={canonicalURL} />
 		<meta name="twitter:title" content={pageTitle} />
 		<meta name="twitter:description" content={pageDesc} />
 		<meta name="twitter:image" content={image} />
 
-		<script type="application/ld+json" set:html={JSON.stringify({
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-P0RDXPTMT0"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-P0RDXPTMT0');
+	</script>
+
+	<script type="application/ld+json" set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "WebApplication",
 			"name": "MindChat AI",
@@ -71,9 +90,9 @@ const image = ogImage || `${site}/favicon.svg`;
 		<script type="module" src="https://unpkg.com/@splinetool/viewer/build/spline-viewer.js"></script>
 		<ClientRouter />
 		<script>
-			let t = localStorage.getItem('mindchat-theme') || 'light';
+			let t = localStorage.getItem('mindchat-theme') || 'dark';
 			if (t === 'pink') {
-				t = 'light';
+				t = 'dark';
 				localStorage.removeItem('mindchat-theme');
 			}
 			document.documentElement.setAttribute('data-theme', t);
@@ -88,22 +107,22 @@ const image = ogImage || `${site}/favicon.svg`;
 	const KEY = 'mindchat-theme';
 	const html = document.documentElement;
 	function updateToggle() {
-		const cur = html.getAttribute('data-theme') || 'light';
+		const cur = html.getAttribute('data-theme') || 'dark';
 		document.querySelectorAll('#theme-toggle').forEach(btn => {
 			btn.textContent = cur === 'dark' ? 'Light Mode' : 'Dark Mode';
 		});
 	}
 	function toggleTheme() {
-		const cur = html.getAttribute('data-theme');
+		const cur = html.getAttribute('data-theme') || 'dark';
 		const next = cur === 'dark' ? 'light' : 'dark';
 		html.setAttribute('data-theme', next);
 		localStorage.setItem(KEY, next);
 		updateToggle();
 	}
 	function syncTheme() {
-		let t = localStorage.getItem(KEY) || 'light';
+		let t = localStorage.getItem(KEY) || 'dark';
 		if (t === 'pink') {
-			t = 'light';
+			t = 'dark';
 			localStorage.removeItem(KEY);
 		}
 		html.setAttribute('data-theme', t);

@@ -26,4 +26,4 @@ pnpm-debug.log*
 # wrangler cache
 .wrangler/
 wrangler.log
-
+.dev.vars
