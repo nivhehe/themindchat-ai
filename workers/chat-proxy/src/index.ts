@@ -20,20 +20,49 @@ export default {
 
 		try {
 			const body = await request.json() as any;
+			const keys = (env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
 
-			const response = await fetch(
-				`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
-				{
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body),
+			if (keys.length === 0) {
+				return new Response(JSON.stringify({ error: { message: 'No API keys configured in Worker.' } }), {
+					status: 500,
+					headers: {
+						'Content-Type': 'application/json',
+						'Access-Control-Allow-Origin': '*',
+					},
+				});
+			}
+
+			let lastData: any = null;
+			let lastStatus = 500;
+
+			for (const key of keys) {
+				const response = await fetch(
+					`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
+					{
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(body),
+					}
+				);
+
+				lastStatus = response.status;
+				lastData = await response.json();
+
+				// If it's not a rate-limit error (429), return it immediately
+				if (response.status !== 429) {
+					return new Response(JSON.stringify(lastData), {
+						status: lastStatus,
+						headers: {
+							'Content-Type': 'application/json',
+							'Access-Control-Allow-Origin': '*',
+						},
+					});
 				}
-			);
+			}
 
-			const data = await response.json();
-
-			return new Response(JSON.stringify(data), {
-				status: response.status,
+			// If we looped through all keys and all returned 429, return the last response
+			return new Response(JSON.stringify(lastData), {
+				status: lastStatus,
 				headers: {
 					'Content-Type': 'application/json',
 					'Access-Control-Allow-Origin': '*',

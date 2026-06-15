@@ -78,6 +78,8 @@ import Layout from '../layouts/Layout.astro';
 <script>
 	const API_URL = 'https://mindchat-proxy.nivedmohan5423.workers.dev';
 
+	let chatTimeoutId: any = null;
+
 	function getTimestamp() {
 		return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 	}
@@ -91,10 +93,11 @@ import Layout from '../layouts/Layout.astro';
 		const chatOptionsPanel = document.getElementById('chat-options-panel');
 
 		if (chatOptionsPanel) {
+			if (chatTimeoutId) clearTimeout(chatTimeoutId);
 			chatOptionsPanel.classList.remove('visible');
-			setTimeout(() => {
+			chatTimeoutId = setTimeout(() => {
 				chatOptionsPanel.classList.add('visible');
-			}, 3000);
+			}, 800);
 		}
 
 		let chatHistory: Array<{role: string, parts: Array<{text: string}>}> = [];
@@ -266,7 +269,6 @@ import Layout from '../layouts/Layout.astro';
 						
 						// Turn interface to baby pink color smoothly
 						document.documentElement.setAttribute('data-theme', 'pink');
-						localStorage.setItem('mindchat-theme', 'pink');
 
 						const text = "hello to the cutest , prettiest , gorgeous person the world\nhow can i help you sweetheart";
 						appendAIMessage(text);
@@ -297,7 +299,8 @@ import Layout from '../layouts/Layout.astro';
 
 					if (!response.ok) {
 						const err = await response.json().catch(() => ({}));
-						throw new Error(err.error || `Server error (${response.status})`);
+						const errMsg = err.error?.message || err.error || `Server error (${response.status})`;
+						throw new Error(errMsg);
 					}
 
 					const data = await response.json();
@@ -325,6 +328,9 @@ import Layout from '../layouts/Layout.astro';
 			}
 		});
 	}
+
+	// Run immediately on initial load
+	initChat();
 
 	document.addEventListener('astro:page-load', initChat);
 </script>
@@ -528,6 +534,7 @@ import Layout from '../layouts/Layout.astro';
 
 	.footer {
 		display: flex; justify-content: space-between; align-items: center;
+		flex-wrap: wrap; gap: 1rem 2rem;
 		width: 100%; padding: 2.5rem 3.5rem; position: relative; z-index: 10;
 		opacity: 0; animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
 	}
@@ -550,9 +557,19 @@ import Layout from '../layouts/Layout.astro';
 	@media (max-width: 900px) {
 		.header { padding: 1.5rem 2rem; }
 		.chat-section { padding: 0 2rem; }
-		.footer { padding: 2rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; justify-items: start; }
-		.footer-item:nth-child(even) { justify-self: end; text-align: right; }
 		.chat-window { padding-bottom: 1.5rem; }
+	}
+
+	@media (max-width: 768px) {
+		.footer {
+			justify-content: center;
+			padding: 1.5rem;
+			gap: 0.75rem 1.5rem;
+		}
+		.footer-item {
+			font-size: 0.6rem;
+			letter-spacing: 0.1em;
+		}
 	}
 
 	@media (max-width: 600px) {
@@ -572,9 +589,6 @@ import Layout from '../layouts/Layout.astro';
 		.control-btn { font-size: 0.55rem; }
 		.suggested-prompts { gap: 0.35rem; margin-top: 0.5rem; }
 		.prompt-chip { font-size: 0.6rem; padding: 0.3rem 0.6rem; }
-		.footer { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; align-items: center; text-align: center; }
-		.footer-item { font-size: 0.6rem; letter-spacing: 0.1em; }
-		.footer-item:nth-child(even) { justify-self: center; text-align: center; }
 	}
 
 	@media (max-width: 400px) {

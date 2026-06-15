@@ -20,7 +20,7 @@ const image = ogImage || `${site}/favicon.svg`;
 <html lang="en" data-theme="light">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 		<title>{pageTitle}</title>
 		<meta name="description" content={pageDesc} />
@@ -71,7 +71,11 @@ const image = ogImage || `${site}/favicon.svg`;
 		<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.54/build/spline-viewer.js"></script>
 		<ClientRouter />
 		<script>
-			const t = localStorage.getItem('mindchat-theme') || 'light';
+			let t = localStorage.getItem('mindchat-theme') || 'light';
+			if (t === 'pink') {
+				t = 'light';
+				localStorage.removeItem('mindchat-theme');
+			}
 			document.documentElement.setAttribute('data-theme', t);
 		</script>
 	</head>
@@ -97,7 +101,11 @@ const image = ogImage || `${site}/favicon.svg`;
 		updateToggle();
 	}
 	function syncTheme() {
-		const t = localStorage.getItem(KEY) || 'light';
+		let t = localStorage.getItem(KEY) || 'light';
+		if (t === 'pink') {
+			t = 'light';
+			localStorage.removeItem(KEY);
+		}
 		html.setAttribute('data-theme', t);
 		updateToggle();
 	}
