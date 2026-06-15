@@ -118,6 +118,51 @@ const image = ogImage || `${site}/favicon.svg`;
 		}
 	});
 	(window as any).toggleTheme = toggleTheme;
+
+	// Mobile touch-forwarding for WebGL (Spline Viewer) look-at events
+	if (!(window as any).__touchForwardingInitialized) {
+		(window as any).__touchForwardingInitialized = true;
+
+		const dispatchTouch = (touch: Touch, type: string) => {
+			const mouseEvent = new MouseEvent(type, {
+				clientX: touch.clientX,
+				clientY: touch.clientY,
+				screenX: touch.screenX,
+				screenY: touch.screenY,
+				bubbles: true,
+				cancelable: true
+			});
+
+			const pointerEvent = new PointerEvent(type.replace('mouse', 'pointer'), {
+				clientX: touch.clientX,
+				clientY: touch.clientY,
+				screenX: touch.screenX,
+				screenY: touch.screenY,
+				bubbles: true,
+				cancelable: true,
+				pointerType: 'touch',
+				isPrimary: true
+			});
+
+			window.dispatchEvent(mouseEvent);
+			window.dispatchEvent(pointerEvent);
+		};
+
+		window.addEventListener('touchstart', (e) => {
+			if (!document.querySelector('spline-viewer')) return;
+			if (e.touches.length > 0) dispatchTouch(e.touches[0], 'mousedown');
+		}, { passive: true });
+
+		window.addEventListener('touchmove', (e) => {
+			if (!document.querySelector('spline-viewer')) return;
+			if (e.touches.length > 0) dispatchTouch(e.touches[0], 'mousemove');
+		}, { passive: true });
+
+		window.addEventListener('touchend', (e) => {
+			if (!document.querySelector('spline-viewer')) return;
+			if (e.changedTouches.length > 0) dispatchTouch(e.changedTouches[0], 'mouseup');
+		}, { passive: true });
+	}
 </script>
 
 <style is:global>
