@@ -100,6 +100,13 @@ import Layout from '../layouts/Layout.astro';
 		let chatHistory: Array<{role: string, parts: Array<{text: string}>}> = [];
 		let isWaiting = false;
 
+		// Custom static replies mapping (lowercased key matches)
+		const CUSTOM_REPLIES: Record<string, string> = {
+			"hello mindchat": "Hello there! I am your custom MindChat AI assistant. How can I help you today? 😊",
+			"what is your favorite programming language?": "My favorite programming language is TypeScript, of course! Astro is also pretty cool. 🚀",
+			"who developed you?": "I was developed by Nived Mohan! You can find his LinkedIn link in the About section of this website. 💻"
+		};
+
 		function parseMarkdown(text: string) {
 			let escaped = text
 				.replace(/&/g, "&amp;")
@@ -257,6 +264,21 @@ import Layout from '../layouts/Layout.astro';
 				loadingDiv.innerHTML = '<div class="message-content"><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>';
 				chatMessages?.appendChild(loadingDiv);
 				scrollToBottom();
+
+				// Check for matching custom replies
+				const normalizedMessage = message.toLowerCase().replace(/[?.,!]/g, "").trim();
+				if (CUSTOM_REPLIES.hasOwnProperty(normalizedMessage)) {
+					setTimeout(() => {
+						loadingDiv.remove();
+						const text = CUSTOM_REPLIES[normalizedMessage];
+						appendAIMessage(text);
+						chatHistory.push({ role: 'user', parts: [{ text: message }] });
+						chatHistory.push({ role: 'model', parts: [{ text }] });
+						isWaiting = false;
+						sendBtn.disabled = false;
+					}, 800); // Simulate network thinking latency
+					return;
+				}
 
 				try {
 					const response = await fetch(API_URL, {
