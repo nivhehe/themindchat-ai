@@ -166,7 +166,9 @@ const image = ogImage || `${site}/favicon.svg`;
 
 	// Show helper prompt on mobile device to guide user touch interaction
 	function initMobileHint() {
-		const isMobile = window.matchMedia('(pointer: coarse)').matches || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+		const isMobile = window.matchMedia('(pointer: coarse)').matches || 
+		                 /Mobi|Android|iPhone/i.test(navigator.userAgent) ||
+		                 window.innerWidth <= 768;
 		if (!isMobile || !document.querySelector('spline-viewer')) return;
 		if (document.querySelector('.touch-interaction-hint')) return;
 
@@ -182,24 +184,22 @@ const image = ogImage || `${site}/favicon.svg`;
 		`;
 		document.body.appendChild(hint);
 
-		const showTimeout = setTimeout(() => {
-			hint.classList.add('visible');
-		}, 3500);
-
-		const hideTimeout = setTimeout(() => {
-			hint.classList.remove('visible');
-			setTimeout(() => hint.remove(), 1000);
-		}, 8500);
-
 		const dismissHint = () => {
-			clearTimeout(showTimeout);
 			clearTimeout(hideTimeout);
 			hint.classList.remove('visible');
 			setTimeout(() => hint.remove(), 1000);
 			window.removeEventListener('touchstart', dismissHint);
 		};
 
-		window.addEventListener('touchstart', dismissHint, { passive: true });
+		const showTimeout = setTimeout(() => {
+			hint.classList.add('visible');
+			// Only register touch dismissal once the hint is fully displayed to prevent early touches from canceling it
+			window.addEventListener('touchstart', dismissHint, { passive: true });
+		}, 3500);
+
+		const hideTimeout = setTimeout(() => {
+			dismissHint();
+		}, 8500);
 	}
 
 	document.addEventListener('astro:page-load', initMobileHint);
