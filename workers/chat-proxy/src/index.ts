@@ -48,8 +48,9 @@ export default {
 				lastStatus = response.status;
 				lastData = await response.json();
 
-				// If it's not a rate-limit error (429), return it immediately
-				if (response.status !== 429) {
+				// If it's not a retryable transient error (429, 502, 503, 504), return it immediately
+				const retryStatuses = [429, 502, 503, 504];
+				if (!retryStatuses.includes(response.status)) {
 					return new Response(JSON.stringify(lastData), {
 						status: lastStatus,
 						headers: {
